@@ -16,8 +16,7 @@
     </style>
 </head>
 <body>
-    <h1>Dropdown Lookup Widget</h1>
-    <label for="dropdown">Select a Product:</label>
+    <label for="dropdown">Select a Training:</label>
     <select id="dropdown">
         <option value="">--Select--</option>
     </select>
@@ -25,7 +24,7 @@
 
     <script>
         const sheetID = '1KOdkObx6Pd-LzmqKSDn7kFxAShOh_5JREuO5f3HxOs4';
-        const query = encodeURIComponent('SELECT A, B');
+        const query = encodeURIComponent('SELECT C');
         const url = `https://docs.google.com/spreadsheets/d/${1KOdkObx6Pd-LzmqKSDn7kFxAShOh_5JREuO5f3HxOs4}/gviz/tq?sheet=Sheet1&tq=${SELECT C}`;
 
         fetch(url)
