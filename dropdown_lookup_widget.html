@@ -1,0 +1,59 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dropdown Lookup Widget</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .info {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Dropdown Lookup Widget</h2>
+        <select id="dropdown" onchange="showInfo()">
+            <option value="">Select a product</option>
+            <option value="Product1">Product 1</option>
+            <option value="Product2">Product 2</option>
+            <option value="Product3">Product 3</option>
+        </select>
+        <div id="info" class="info"></div>
+    </div>
+
+    <script>
+        function showInfo() {
+            var dropdown = document.getElementById("dropdown");
+            var info = document.getElementById("info");
+            var selectedValue = dropdown.value;
+
+            if (selectedValue === "Product1") {
+                info.innerHTML = "<strong>Product 1:</strong> Description and details of Product 1.";
+            } else if (selectedValue === "Product2") {
+                info.innerHTML = "<strong>Product 2:</strong> Description and details of Product 2.";
+            } else if (selectedValue === "Product3") {
+                info.innerHTML = "<strong>Product 3:</strong> Description and details of Product 3.";
+            } else {
+                info.innerHTML = "";
+            }
+        }
+    </script>
+</body>
+</html>
