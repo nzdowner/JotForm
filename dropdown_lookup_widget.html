@@ -25,7 +25,7 @@
     const dropdown = document.getElementById('lookupDropdown');
 
     // Replace with your endpoint
-    const DATA_URL = "https://docs.google.com/spreadsheets/d/1KOdkObx6Pd-LzmqKSDn7kFxAShOh_5JREuO5f3HxOs4/gviz/tq?sheet=Sheet1&tq=SELECT C";
+    const DATA_URL = "https://api.sheetbest.com/sheets/b3bdf716-edf7-4808-8a70-454ed289a750";
 
     fetch(DATA_URL)
       .then(res => res.json())
@@ -33,8 +33,8 @@
         dropdown.innerHTML = '';
         data.forEach(item => {
           const opt = document.createElement('option');
-          opt.value = item.value;
-          opt.textContent = item.label;
+          opt.value = Training Title.value;
+          opt.textContent = Training Title.label;
           dropdown.appendChild(opt);
         });
       })
