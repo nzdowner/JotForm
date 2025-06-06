@@ -1,57 +1,64 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dropdown Lookup Widget</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        select, div {
-            margin-top: 10px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Dropdown Lookup Widget</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 15px;
+    }
+    select {
+      width: 100%;
+      padding: 8px;
+      font-size: 16px;
+    }
+  </style>
 </head>
 <body>
-    <label for="dropdown">Select a Training:</label>
-    <select id="dropdown">
-        <option value="">--Select--</option>
-    </select>
-    <div id="info"></div>
+  <label for="lookupDropdown">Select a Value:</label>
+  <select id="lookupDropdown">
+    <option value="">Loading...</option>
+  </select>
 
-    <script>
-        const sheetID = '1KOdkObx6Pd-LzmqKSDn7kFxAShOh_5JREuO5f3HxOs4';
-        const query = encodeURIComponent('SELECT C');
-        const url = "https://docs.google.com/spreadsheets/d/1KOdkObx6Pd-LzmqKSDn7kFxAShOh_5JREuO5f3HxOs4/gviz/tq?sheet=Sheet1&tq=SELECT C";
+  <script>
+    const dropdown = document.getElementById('lookupDropdown');
 
-        fetch(url)
-            .then(res => res.text())
-            .then(rep => {
-                const json = JSON.parse(rep.substr(47).slice(0, -2));
-                const dropdown = document.getElementById("dropdown");
-                const info = document.getElementById("info");
+    // Replace with your endpoint
+    const DATA_URL = "https://docs.google.com/spreadsheets/d/1KOdkObx6Pd-LzmqKSDn7kFxAShOh_5JREuO5f3HxOs4/gviz/tq?sheet=Sheet1&tq=SELECT C";
 
-                const data = {};
-                json.table.rows.forEach(row => {
-                    const product = row.c[0]?.v;
-                    const description = row.c[1]?.v;
-                    if (product && description) {
-                        data[product] = description;
-                        const option = document.createElement("option");
-                        option.value = item.value;
-                        option.textContent = item.value;
-                        dropdown.appendChild(option);
-                    }
-                });
+    fetch(DATA_URL)
+      .then(res => res.json())
+      .then(data => {
+        dropdown.innerHTML = '';
+        data.forEach(item => {
+          const opt = document.createElement('option');
+          opt.value = item.value;
+          opt.textContent = item.label;
+          dropdown.appendChild(opt);
+        });
+      })
+      .catch(() => {
+        dropdown.innerHTML = '<option value="">Error loading data</option>';
+      });
 
-                dropdown.addEventListener("change", () => {
-                    const selected = dropdown.value;
-                    info.innerHTML = `<strong>${selected}:</strong> ${data[selected] || ''}`;
-                });
-            });
-    </script>
+    dropdown.addEventListener('change', () => {
+      window.parent.postMessage({
+        type: 'setValue',
+        value: dropdown.value
+      }, '*');
+    });
+
+    window.addEventListener('message', function (e) {
+      if (e.data && e.data.type === 'getValue') {
+        window.parent.postMessage({
+          type: 'setValue',
+          value: dropdown.value
+        }, '*');
+      }
+    });
+
+    window.parent.postMessage({ type: 'ready' }, '*');
+  </script>
 </body>
 </html>
