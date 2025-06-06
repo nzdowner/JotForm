@@ -91,7 +91,6 @@
     </div>
   </div>
 
-  <!--
   <script>
     const dropdown = document.getElementById('lookupDropdown');
 
@@ -130,50 +129,7 @@
     });
     window.parent.postMessage({ type: 'ready' }, '*');
   </script>
-  -->
 
-
-<script>
-  const dropdown = document.getElementById('lookupDropdown');
-
-  const DATA_URL = "https://api.sheetbest.com/sheets/8f2ee89f-85e8-4522-8c69-b1a9b7ecb611";
-
-  fetch(DATA_URL)
-    .then(res => res.json())
-    .then(data => {
-      dropdown.innerHTML = '<option value="">Select an option</option>';
-      data.forEach(item => {
-        const opt = document.createElement('option');
-        opt.value = item.Training;
-        opt.textContent = item.Training;
-        dropdown.appendChild(opt);
-      });
-    })
-    .catch((err) => {
-      console.error("Error loading data:", err);
-      dropdown.innerHTML = '<option value="">Error loading data</option>';
-    });
-
-  dropdown.addEventListener('change', () => {
-    window.parent.postMessage({
-      type: 'setValue',
-      value: dropdown.value
-    }, '*');
-  });
-
-  window.addEventListener('message', function (e) {
-    if (e.data && e.data.type === 'getValue') {
-      window.parent.postMessage({
-        type: 'setValue',
-        value: dropdown.value
-      }, '*');
-    }
-  });
-
-  window.parent.postMessage({ type: 'ready' }, '*');
-</script>
-
-  
   
 </body>
 </html>
