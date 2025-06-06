@@ -134,11 +134,11 @@
 
 
 
+
 <script>
   const dropdown = document.getElementById('lookupDropdown');
 
-  // Replace with your endpoint
-  const DATA_URL = "https://api.sheetbest.com/sheets/8f2ee89f-85e8-4522-8c69-b1a9b7ecb611";
+  const DATA_URL = "https://api.sheetbest.com/sheets/da92feb1-70a9-4156-bcea-ac90242fc892";
 
   let fullData = [];
 
@@ -149,7 +149,7 @@
       dropdown.innerHTML = '<option value="">Select an option</option>';
       data.forEach((item, index) => {
         const opt = document.createElement('option');
-        opt.value = index; // Store index to reference full data later
+        opt.value = index;
         opt.textContent = item.Training;
         dropdown.appendChild(opt);
       });
@@ -158,20 +158,17 @@
       dropdown.innerHTML = '<option value="">Error loading data</option>';
     });
 
-  function sendFieldValue(fieldName, value) {
-    window.parent.postMessage({
-      type: 'setValue',
-      field: fieldName,
-      value: value
-    }, '*');
-  }
-
   function sendSelectedData(index) {
     const selectedRow = fullData[index];
     if (!selectedRow) return;
 
-    // Send each field separately
-    sendFieldValue('Training', selectedRow.Training);
+    // Send a single string with delimiters
+    const combinedValue = `${selectedRow.Training}`;
+
+    window.parent.postMessage({
+      type: 'setValue',
+      value: combinedValue
+    }, '*');
   }
 
   dropdown.addEventListener('change', () => {
@@ -188,7 +185,6 @@
 
   window.parent.postMessage({ type: 'ready' }, '*');
 </script>
-
   
   
 </body>
