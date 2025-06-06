@@ -133,58 +133,46 @@
   -->
 
 
-
-
 <script>
   const dropdown = document.getElementById('lookupDropdown');
 
   const DATA_URL = "https://api.sheetbest.com/sheets/8f2ee89f-85e8-4522-8c69-b1a9b7ecb611";
 
-  let fullData = [];
-
   fetch(DATA_URL)
     .then(res => res.json())
     .then(data => {
-      fullData = data;
       dropdown.innerHTML = '<option value="">Select an option</option>';
-      data.forEach((item, index) => {
+      data.forEach(item => {
         const opt = document.createElement('option');
-        opt.value = index;
+        opt.value = item.Training;
         opt.textContent = item.Training;
         dropdown.appendChild(opt);
       });
     })
-    .catch(() => {
+    .catch((err) => {
+      console.error("Error loading data:", err);
       dropdown.innerHTML = '<option value="">Error loading data</option>';
     });
 
-  function sendSelectedData(index) {
-    const selectedRow = fullData[index];
-    if (!selectedRow) return;
-
-    // Send a single string with delimiters
-    const combinedValue = `${selectedRow.Training}`;
-
+  dropdown.addEventListener('change', () => {
     window.parent.postMessage({
       type: 'setValue',
-      value: combinedValue
+      value: dropdown.value
     }, '*');
-  }
-
-  dropdown.addEventListener('change', () => {
-    const selectedIndex = dropdown.value;
-    sendSelectedData(selectedIndex);
   });
 
   window.addEventListener('message', function (e) {
     if (e.data && e.data.type === 'getValue') {
-      const selectedIndex = dropdown.value;
-      sendSelectedData(selectedIndex);
+      window.parent.postMessage({
+        type: 'setValue',
+        value: dropdown.value
+      }, '*');
     }
   });
 
   window.parent.postMessage({ type: 'ready' }, '*');
 </script>
+
   
   
 </body>
